@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto lector</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: rgb(39, 39, 39);
+      color: #ffffff;
+    }
+    main {
+      border: 1px solid blue;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .title {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    form {
+      /*border: 1px solid red;*/
+      width: 700px;
+      padding: 30px 60px;
+      background-color: rgb(68, 68, 68);
+      border-radius: 1rem;
+    }
+    form label {
+      display: block;
+      font-size: 18px;
+    }
+    form textarea {
+      min-height: 200px;
+      width: 100%;
+      resize: vertical;
+      max-height: 450px;
+      font-size: 20px;
+      padding: 10px;
+      outline: none;
+      border: none;
+      margin: 5px 0;
+    }
+    .btn {
+      outline: none;
+      border: none;
+      color: #ffffff;
+      padding: 10px 40px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn_read {
+      background-color: rgb(4, 133, 40);
+    }
+    .btn_read:hover {
+      background-color: rgb(4, 119, 36);
+    }
+    .btn_pause {
+      background-color: rgb(9, 119, 183);
+    }
+    .btn_pause:hover {
+      background-color: rgb(12, 105, 159);
+    }
+    .btn_stop {
+      background-color: rgb(183, 9, 9);
+    }
+    .btn_stop:hover {
+      background-color: rgb(158, 15, 15);
+    }
+  </style>
+</head>
+<body>
+  
+  <main>
+    <h1 class="title">Yo leo por tí!!</h1>
+    <form>
+      <label for="inp_text">Texto para leer</label>
+      <textarea id="inp_text"></textarea>
+      <button class="btn btn_read">Leer</button>
+      <button class="btn btn_pause">Pausar</button>
+      <button class="btn btn_stop">Detener</button>
+    </form>
+  </main>
+
+  <script>
+    let msg = new SpeechSynthesisUtterance();
+    msg.lang = "es-Es";
+
+    inp_text = document.getElementById("inp_text");
+    
+    document.querySelector(".btn_read").addEventListener("click", (e) => {
+      e.preventDefault();
+      msg.text = inp_text.value;
+      console.log(inp_text.value);
+      window.speechSynthesis.speak(msg);
+    });
+
+    document.querySelector(".btn_pause").addEventListener("click", (e) => {
+      e.preventDefault();
+      pause();
+    });
+    
+    document.querySelector(".btn_stop").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.speechSynthesis.cancel();
+    });
+    
+    let isPaused = false;
+    const pause = () => {
+      if (!isPaused) {
+        window.speechSynthesis.pause();
+        isPaused = true;
+        document.querySelector(".btn_pause").textContent = "Continuar";
+      }
+      else {
+        window.speechSynthesis.resume();
+        isPaused = false;
+        document.querySelector(".btn_pause").textContent = "Pausar";
+      }
+    }
+
+  </script>
+</body>
+</html>
